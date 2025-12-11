@@ -23,27 +23,33 @@ void gamesOutput(map<string, string>);
 int main() { 
     srand(time(0));
 
-    //File populating w/ names
+    //File populating
     ifstream namesfile("names.txt");
     vector <string> names;
     string line;
     while (getline(namesfile, line))
         names.push_back(line);
     namesfile.close();
-
-    //Queues
-    Coffee* head = nullptr;
-    deque <string> muffinQueue;
-    vector <string> friendshipBracelets;
-    map <string, string> games;
-    
-    //COFFEE
     //Drink file
     ifstream drinksfile("drinks.txt");
     vector <string> drinks;
     while (getline(drinksfile, line))
         drinks.push_back(line);
     drinksfile.close();
+    //Games file
+    ifstream gamesfile("games.txt");
+    vector <string> games;
+    while (getline(gamesfile, line))
+        games.push_back(line);
+    gamesfile.close();
+
+    //Queues
+    Coffee* head = nullptr;
+    deque <string> muffinQueue;
+    vector <string> friendshipBracelets;
+    map <string, string> gamesQueue;
+    
+    
     //Initializing 3 customers
     for (int i = 0; i < 3; i++) {
         int randNum = rand() % names.size();
@@ -59,13 +65,10 @@ int main() {
     coffeeOutput(head);
     cout << "Muffin ";
     muffinOutput(muffinQueue);
-    cout << endl;
     cout << "Friendship Bracelets ";
     friendshipBrOutput(friendshipBracelets);
-    cout << endl;
     cout << "Video games ";
-    gamesOutput(games);
-    cout << endl;
+    gamesOutput(gamesQueue);
 
     //10 Simulation Rounds
     for (int i = 0; i < ROUNDS; i++) {
@@ -126,19 +129,22 @@ int main() {
 
         //GAME BOOTH
         cout << "Video game booth:" << endl;
-        if (!muffinQueue.empty()) {
-            cout << "[" << muffinQueue[0] << " has bought a bracelet" << "]" << endl;
-            muffinQueue.pop_front();
+        if (!gamesQueue.empty()) {
+            auto it = gamesQueue.begin();
+            cout << "[" << it->first << " has bought the game " << it->second << "]" << endl;
+            gamesQueue.erase(it);
         }
         //Joining probability
         probability = rand() % 100 + 1;
         if (probability > 50) {
             int randNum = rand() % names.size();
             string name = names[randNum];
-            friendshipBracelets.push_back(name);
-            cout << "[" << name << " has joined the bracelets booth queue" << "]" << endl;
+            randNum = rand() % games.size();
+            string randGame = games[randNum];
+            gamesQueue[name] = randGame;
+            cout << "[" << name << " has joined the game queue" << "]" << endl;
         }
-        friendshipBrOutput(friendshipBracelets);
+        gamesOutput(gamesQueue);
     }
 }   
 
@@ -198,7 +204,13 @@ void friendshipBrOutput(vector<string> bracelets) {
 }
 
 void gamesOutput(map<string, string> gameList) {
-    for (auto pair : gameList) {
-        cout << pair.first << " " << pair.second << endl;
+    cout << "Queue:" << endl;
+    if (gameList.empty()) {
+        cout << "     Empty" << endl << endl;
+        return;
     }
+    for (auto pair : gameList) {
+        cout << "      " << pair.first << ": " << pair.second << endl;
+    }
+    cout << endl;
 }
