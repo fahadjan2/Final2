@@ -15,24 +15,27 @@ struct Coffee {
 
 void coffeeOutput(Coffee *);
 void addCoffeeOrder(Coffee *&, string, string);
+void muffinOutput(deque<string>);
 
 int main() { 
     srand(time(0));
 
-    //File populating w/ names and drinks for Coffee
+    //File populating w/ names
     ifstream namesfile("names.txt");
-    ifstream drinksfile("drinks.txt");
     vector <string> names;
-    vector <string> drinks;
     string line;
     while (getline(namesfile, line))
         names.push_back(line);
+    namesfile.close();
+    
+    //COFFEE POPULATING
+    Coffee* head = nullptr;
+    //Drink file
+    ifstream drinksfile("drinks.txt");
+    vector <string> drinks;
     while (getline(drinksfile, line))
         drinks.push_back(line);
-    namesfile.close();
     drinksfile.close();
-
-    Coffee* head = nullptr;
     //Initializing 3 customers
     for (int i = 0; i < 3; i++) {
         int randNum = rand() % names.size();
@@ -42,6 +45,10 @@ int main() {
         addCoffeeOrder(head, name, drink);
     }
 
+    //MUFFIN
+    deque <string> muffinQueue;
+
+    //Initial queue
     cout << "Initial queue:" << endl;
     coffeeOutput(head);
 
@@ -50,22 +57,38 @@ int main() {
         cout << "Round " << i + 1 << endl;
 
         //COFFEE LINE
-        if (head) { //Serves the head of the line
+        //Serves the head of the line
+        if (head) { 
             cout << head->name << " has been served " << head->drink << endl;
             Coffee* temp = head;
             head = temp->next;
             delete temp;
         }
-
+        //Probability of joining queue
         int probability = rand() % 100 + 1;
-        if (probability > 50) { //Joins queue
+        if (probability > 50) {
             int randNum = rand() % names.size();
             string name = names[randNum];
             randNum = rand() % drinks.size();
             string drink = drinks[randNum];
             addCoffeeOrder(head, name, drink);
-            cout << name << " has joined the queue" << endl;
+            cout << name << " has joined the coffee booth queue" << endl;
         }
+
+        //MUFFIN LINE
+        if (!muffinQueue.empty()) {
+
+            muffinQueue.pop_front();
+        }
+        //Joining probability
+        probability = rand() % 100 + 1;
+        if (probability > 50) {
+            int randNum = rand() % names.size();
+            string name = names[randNum];
+            muffinQueue.push_back(name);
+            cout << name << " has joined the muffin booth queue" << endl;
+        }
+
 
         //Outputs
         coffeeOutput(head);
@@ -102,4 +125,8 @@ void addCoffeeOrder(Coffee*& head, string name, string drink) {
         }
         current->next = newOrder;
     }
+}
+
+void muffinOutput(deque<string>) {
+    
 }
