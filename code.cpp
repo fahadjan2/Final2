@@ -49,17 +49,21 @@ int main() {
     deque <string> muffinQueue;
 
     //Initial queue
-    cout << "Initial queue:" << endl;
+    cout << "Initial queues:" << endl;
+    cout << "Coffee ";
     coffeeOutput(head);
+    cout << "Muffin ";
+    muffinOutput(muffinQueue);
+    cout << endl;
 
     //10 Simulation Rounds
     for (int i = 0; i < ROUNDS; i++) {
-        cout << "Round " << i + 1 << endl;
+        cout << "---Round " << i + 1 << "---" << endl;
 
-        //COFFEE LINE
+        cout << "Coffee booth:" << endl;
         //Serves the head of the line
         if (head) { 
-            cout << head->name << " has been served " << head->drink << endl;
+            cout << "[" << head->name << " has been served " << head->drink << "]" << endl;
             Coffee* temp = head;
             head = temp->next;
             delete temp;
@@ -72,12 +76,13 @@ int main() {
             randNum = rand() % drinks.size();
             string drink = drinks[randNum];
             addCoffeeOrder(head, name, drink);
-            cout << name << " has joined the coffee booth queue" << endl;
+            cout << "[" << name << " has joined the coffee booth queue" << "]" << endl;
         }
+        coffeeOutput(head);
 
-        //MUFFIN LINE
+        cout << "Muffin booth:" << endl;
         if (!muffinQueue.empty()) {
-
+            cout << "[" << muffinQueue[0] << " has been served" << "]" << endl;
             muffinQueue.pop_front();
         }
         //Joining probability
@@ -86,26 +91,23 @@ int main() {
             int randNum = rand() % names.size();
             string name = names[randNum];
             muffinQueue.push_back(name);
-            cout << name << " has joined the muffin booth queue" << endl;
+            cout << "[" << name << " has joined the muffin booth queue" << "]" << endl;
         }
+        muffinOutput(muffinQueue);
 
-
-        //Outputs
-        coffeeOutput(head);
     }
-
 }   
 
 void coffeeOutput(Coffee* head) {
+    cout << "Queue:" << endl;
     if (!head) {
-        cout << "Queue empty" << endl << endl;
+        cout << "     Empty" << endl << endl;
         return;
     }
     
     Coffee* current = head;
-    cout << "Coffee queue:" << endl;
     while (current) {
-        cout << current->name << ": " << current->drink << endl; 
+        cout << "     " << current->name << ": " << current->drink << endl; 
         current = current->next;
     }
     cout << endl;
@@ -127,6 +129,14 @@ void addCoffeeOrder(Coffee*& head, string name, string drink) {
     }
 }
 
-void muffinOutput(deque<string>) {
-    
+void muffinOutput(deque<string> muffins) {
+    cout << "Queue:" << endl;
+    if (muffins.empty()) {
+        cout << "     Empty" << endl;
+        return;
+    }
+    for (auto it : muffins) {
+        cout << "     " << it << endl;
+    }
+    cout << endl;
 }
