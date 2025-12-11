@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <vector>
 #include <deque>
+#include <map>
 using namespace std;
 
 const int ROUNDS = 10;
@@ -17,6 +18,7 @@ void coffeeOutput(Coffee *);
 void addCoffeeOrder(Coffee *&, string, string);
 void muffinOutput(deque<string>);
 void friendshipBrOutput(vector<string>);
+void gamesOutput(map<string, string>);
 
 int main() { 
     srand(time(0));
@@ -33,6 +35,7 @@ int main() {
     Coffee* head = nullptr;
     deque <string> muffinQueue;
     vector <string> friendshipBracelets;
+    map <string, string> games;
     
     //COFFEE
     //Drink file
@@ -50,8 +53,7 @@ int main() {
         addCoffeeOrder(head, name, drink);
     }
    
-
-    //Initial queue
+    //Initial queue output
     cout << "Initial queues:" << endl;
     cout << "Coffee ";
     coffeeOutput(head);
@@ -60,6 +62,9 @@ int main() {
     cout << endl;
     cout << "Friendship Bracelets ";
     friendshipBrOutput(friendshipBracelets);
+    cout << endl;
+    cout << "Video games ";
+    gamesOutput(games);
     cout << endl;
 
     //10 Simulation Rounds
@@ -105,6 +110,22 @@ int main() {
 
         //FRIENDSHIP BRACELETS
         cout << "Friendship Bracelets booth:" << endl;
+        if (!friendshipBracelets.empty()) {
+            cout << "[" << friendshipBracelets[0] << " has bought a bracelet" << "]" << endl;
+            friendshipBracelets.erase(friendshipBracelets.begin());
+        }
+        //Joining probability
+        probability = rand() % 100 + 1;
+        if (probability > 50) {
+            int randNum = rand() % names.size();
+            string name = names[randNum];
+            friendshipBracelets.push_back(name);
+            cout << "[" << name << " has joined the bracelets booth queue" << "]" << endl;
+        }
+        friendshipBrOutput(friendshipBracelets);
+
+        //GAME BOOTH
+        cout << "Video game booth:" << endl;
         if (!muffinQueue.empty()) {
             cout << "[" << muffinQueue[0] << " has bought a bracelet" << "]" << endl;
             muffinQueue.pop_front();
@@ -174,4 +195,10 @@ void friendshipBrOutput(vector<string> bracelets) {
         cout << "     " << it << endl;
     }
     cout << endl; 
+}
+
+void gamesOutput(map<string, string> gameList) {
+    for (auto pair : gameList) {
+        cout << pair.first << " " << pair.second << endl;
+    }
 }
