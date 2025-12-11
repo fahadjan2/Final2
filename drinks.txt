@@ -1,0 +1,21 @@
+Espresso
+Americano
+Latte
+Cappuccino
+Mocha
+Flat White
+Macchiato
+Iced Coffee
+Cold Brew
+Chai Latte
+Matcha Latte
+Caramel Latte
+Vanilla Frappe
+Hot Chocolate
+Turmeric Latte
+Affogato
+Red Eye
+Cortado
+Irish Coffee
+Pumpkin Spice Latte
+Dirty Chai
