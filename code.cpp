@@ -16,6 +16,7 @@ struct Coffee {
 void coffeeOutput(Coffee *);
 void addCoffeeOrder(Coffee *&, string, string);
 void muffinOutput(deque<string>);
+void friendshipBrOutput(vector<string>);
 
 int main() { 
     srand(time(0));
@@ -27,9 +28,13 @@ int main() {
     while (getline(namesfile, line))
         names.push_back(line);
     namesfile.close();
-    
-    //COFFEE POPULATING
+
+    //Queues
     Coffee* head = nullptr;
+    deque <string> muffinQueue;
+    vector <string> friendshipBracelets;
+    
+    //COFFEE
     //Drink file
     ifstream drinksfile("drinks.txt");
     vector <string> drinks;
@@ -44,9 +49,7 @@ int main() {
         string drink = drinks[randNum];
         addCoffeeOrder(head, name, drink);
     }
-
-    //MUFFIN
-    deque <string> muffinQueue;
+   
 
     //Initial queue
     cout << "Initial queues:" << endl;
@@ -55,11 +58,15 @@ int main() {
     cout << "Muffin ";
     muffinOutput(muffinQueue);
     cout << endl;
+    cout << "Friendship Bracelets ";
+    friendshipBrOutput(friendshipBracelets);
+    cout << endl;
 
     //10 Simulation Rounds
     for (int i = 0; i < ROUNDS; i++) {
         cout << "---Round " << i + 1 << "---" << endl;
 
+        //COFFEE
         cout << "Coffee booth:" << endl;
         //Serves the head of the line
         if (head) { 
@@ -80,6 +87,7 @@ int main() {
         }
         coffeeOutput(head);
 
+        //MUFFIN
         cout << "Muffin booth:" << endl;
         if (!muffinQueue.empty()) {
             cout << "[" << muffinQueue[0] << " has been served" << "]" << endl;
@@ -95,6 +103,21 @@ int main() {
         }
         muffinOutput(muffinQueue);
 
+        //FRIENDSHIP BRACELETS
+        cout << "Friendship Bracelets booth:" << endl;
+        if (!muffinQueue.empty()) {
+            cout << "[" << muffinQueue[0] << " has bought a bracelet" << "]" << endl;
+            muffinQueue.pop_front();
+        }
+        //Joining probability
+        probability = rand() % 100 + 1;
+        if (probability > 50) {
+            int randNum = rand() % names.size();
+            string name = names[randNum];
+            friendshipBracelets.push_back(name);
+            cout << "[" << name << " has joined the bracelets booth queue" << "]" << endl;
+        }
+        friendshipBrOutput(friendshipBracelets);
     }
 }   
 
@@ -132,11 +155,23 @@ void addCoffeeOrder(Coffee*& head, string name, string drink) {
 void muffinOutput(deque<string> muffins) {
     cout << "Queue:" << endl;
     if (muffins.empty()) {
-        cout << "     Empty" << endl;
+        cout << "     Empty" << endl << endl;
         return;
     }
     for (auto it : muffins) {
         cout << "     " << it << endl;
     }
     cout << endl;
+}
+
+void friendshipBrOutput(vector<string> bracelets) {
+    cout << "Queue:" << endl;
+    if (bracelets.empty()) {
+        cout << "     Empty" << endl << endl;
+        return;
+    }
+    for (auto it : bracelets) {
+        cout << "     " << it << endl;
+    }
+    cout << endl; 
 }
