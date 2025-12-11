@@ -24,19 +24,20 @@ int main() {
     srand(time(0));
 
     //File populating
+    //Names
     ifstream namesfile("names.txt");
     vector <string> names;
     string line;
     while (getline(namesfile, line))
         names.push_back(line);
     namesfile.close();
-    //Drink file
+    //Drinks
     ifstream drinksfile("drinks.txt");
     vector <string> drinks;
     while (getline(drinksfile, line))
         drinks.push_back(line);
     drinksfile.close();
-    //Games file
+    //Games
     ifstream gamesfile("games.txt");
     vector <string> games;
     while (getline(gamesfile, line))
@@ -49,8 +50,7 @@ int main() {
     vector <string> friendshipBracelets;
     map <string, string> gamesQueue;
     
-    
-    //Initializing 3 customers
+    //Initializing 3 customers for coffee line
     for (int i = 0; i < 3; i++) {
         int randNum = rand() % names.size();
         string name = names[randNum];
@@ -59,7 +59,7 @@ int main() {
         addCoffeeOrder(head, name, drink);
     }
    
-    //Initial queue output
+    //Initial queue outputs
     cout << "Initial queues:" << endl;
     cout << "Coffee ";
     coffeeOutput(head);
